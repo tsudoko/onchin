@@ -109,7 +109,7 @@ def gendir(path):
 	for f in files:
 		html += "	<li><a "
 		if f.playable:
-			html += 'href="#" data-file="{}" onclick="playFile(this.dataset.file)"'.format(quote(f.name))
+			html += 'href="{f}" data-file="{f}" onclick="return playFile(this.dataset.file)"'.format(f=quote(f.name))
 		else:
 			html += 'href="{}"'.format(quote(f.name))
 		html += ">{}</a></li>\n".format(escape(f.name))
