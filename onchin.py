@@ -5,6 +5,7 @@ from urllib.parse import quote
 import os
 import sys
 
+play_next = False  # play next file after the current one ends
 playable_exts = (".mp3", ".ogg")
 cover_names = ("cover", "folder")
 image_exts = ("jpg", "png", "jpeg")
@@ -43,7 +44,19 @@ function playFile(path) {
 	player.play();
 	return false;
 }
-"""
+
+function main() {
+	const files = Array.map(document.querySelectorAll("#files a[data-file]"), (a) => a.dataset.file);
+	const playNext = %s;
+
+	if(playNext)
+		player.addEventListener("ended", () => {
+			let i = files.indexOf(basename(player.src));
+			if(i + 1 < files.length)
+				playFile(files[i+1]);
+		});
+}
+""" % ("true" if play_next else "false")
 
 reindent = lambda text, times=1: ''.join(("\t" * times) + x + "\n" for x in text.split("\n"))
 rjs = reindent(js, 2)
@@ -84,7 +97,7 @@ def gendir(path):
 	html += "	<style>{}</style>\n".format(rcss)
 	html += "	<script>{}</script>\n".format(rjs)
 	html += "</head>\n"
-	html += "<body>\n"
+	html += '<body onload="main()">\n'
 	if cover:
 		html += '	<img id="cover" src="{}" />\n'.format(cover)
 	html += '	<div id="container">\n'
@@ -92,11 +105,11 @@ def gendir(path):
 	html += '		<audio id="player" controls></audio>\n'
 	html += "	</div>\n"
 	html += '	<hr />\n'
-	html += '	<ul>\n'
+	html += '	<ul id="files">\n'
 	for f in files:
 		html += "	<li><a "
 		if f.playable:
-			html += 'href="#" onclick="playFile(\'{}\')"'.format(quote(f.name))
+			html += 'href="#" data-file="{}" onclick="playFile(this.dataset.file)"'.format(quote(f.name))
 		else:
 			html += 'href="{}"'.format(quote(f.name))
 		html += ">{}</a></li>\n".format(escape(f.name))
