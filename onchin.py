@@ -18,6 +18,7 @@ body {
 }
 
 audio#player {
+	margin-top: 1em;
 	width: 600px;
 }
 
@@ -29,6 +30,15 @@ img#cover {
 
 #container {
 	display: inline-block;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+li {
+	list-style: none;
 }
 """
 
