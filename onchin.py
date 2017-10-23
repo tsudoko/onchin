@@ -15,30 +15,41 @@ covers = tuple("{}.{}".format(name, ext) for name in cover_names for ext in imag
 css = """
 body {
 	font-family: monospace;
+	background-color: #2d2d2d;
+}
+		
+a {
+	font-size: 13px;
+	color: #777777;
+	text-decoration: none;
 }
 
 audio#player {
-	margin-top: 1em;
-	width: 600px;
+	margin-top: 10px;
+	display: flex;
+	width: 500px;
 }
-
+		
 img#cover {
-	display: inline-block;
-	max-height: 128px;
-	max-width: 128px;
+	display: flex;
+	max-height: 500px;
+	max-width: 500px;
 }
-
-#container {
-	display: inline-block;
+#nani {
+	margin: 40px;
+	display: flex;
 }
-
-ul {
-	margin: 0;
-	padding: 0;
+#np {
+	font-size: 15px;
+   	color: #ffffff;
+        padding-top: 10px;
+        text-align: center;	
+	max-width: 500px;
 }
-
-li {
-	list-style: none;
+#song {
+	font-size: 14px;
+	line-height: 20px;
+	color: #cbcbcb;
 }
 """
 
@@ -108,22 +119,21 @@ def gendir(path):
 	html += "	<script>{}</script>\n".format(rjs)
 	html += "</head>\n"
 	html += '<body onload="main()">\n'
+	html += '<div id="nani"><div id="dupa">\n'
 	if cover:
 		html += '	<img id="cover" src="{}" />\n'.format(cover)
-	html += '	<div id="container">\n'
-	html += '		<div id="np"></div>\n'
 	html += '		<audio id="player" controls></audio>\n'
+	html += '		<div id="np"></div>\n'
 	html += "	</div>\n"
-	html += '	<hr />\n'
 	html += '	<ul id="files">\n'
 	for f in files:
 		html += "	<li><a "
 		if f.playable:
-			html += 'href="{f}" data-file="{f}" onclick="return playFile(this.dataset.file)"'.format(f=quote(f.name))
+			html += 'id="song" href="{f}" data-file="{f}" onclick="return playFile(this.dataset.file)"'.format(f=quote(f.name))
 		else:
 			html += 'href="{}"'.format(quote(f.name))
 		html += ">{}</a></li>\n".format(escape(f.name))
-	html += "</ul>\n</body>\n</html>\n"
+	html += "</ul>\n</div>\n</body>\n</html>\n"
 	return html
 
 if __name__ == "__main__":
