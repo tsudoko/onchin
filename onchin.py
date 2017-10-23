@@ -17,7 +17,7 @@ body {
 	font-family: monospace;
 	background-color: #2d2d2d;
 }
-		
+
 a {
 	font-size: 13px;
 	color: #777777;
@@ -29,23 +29,26 @@ audio#player {
 	display: flex;
 	width: 500px;
 }
-		
+
 img#cover {
 	display: flex;
 	max-height: 500px;
 	max-width: 500px;
 }
+
 #nani {
 	margin: 40px;
 	display: flex;
 }
+
 #np {
 	font-size: 15px;
-   	color: #ffffff;
-        padding-top: 10px;
-        text-align: center;	
+	color: #ffffff;
+	padding-top: 10px;
+	text-align: center;
 	max-width: 500px;
 }
+
 #song {
 	font-size: 14px;
 	line-height: 20px;
