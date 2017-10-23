@@ -16,17 +16,23 @@ css = """
 body {
 	font-family: monospace;
 	background-color: #2d2d2d;
+	margin: 40px;
 }
 
 a {
 	font-size: 13px;
-	color: #777777;
+	color: #777;
 	text-decoration: none;
 }
 
+#container, #files {
+	display: inline-block;
+	vertical-align: top;
+}
+
 audio#player {
-	margin-top: 10px;
 	display: flex;
+	margin-top: 10px;
 	width: 500px;
 }
 
@@ -36,20 +42,15 @@ img#cover {
 	max-width: 500px;
 }
 
-#nani {
-	margin: 40px;
-	display: flex;
-}
-
 #np {
 	font-size: 15px;
-	color: #ffffff;
 	padding-top: 10px;
 	text-align: center;
+	color: #fff;
 	max-width: 500px;
 }
 
-#song {
+a[data-file] {
 	font-size: 14px;
 	line-height: 20px;
 	color: #cbcbcb;
@@ -122,9 +123,9 @@ def gendir(path):
 	html += "	<script>{}</script>\n".format(rjs)
 	html += "</head>\n"
 	html += '<body onload="main()">\n'
-	html += '<div id="nani"><div id="dupa">\n'
+	html += '	<div id="container">\n'
 	if cover:
-		html += '	<img id="cover" src="{}" />\n'.format(cover)
+		html += '		<img id="cover" src="{}" />\n'.format(cover)
 	html += '		<audio id="player" controls></audio>\n'
 	html += '		<div id="np"></div>\n'
 	html += "	</div>\n"
@@ -132,11 +133,11 @@ def gendir(path):
 	for f in files:
 		html += "	<li><a "
 		if f.playable:
-			html += 'id="song" href="{f}" data-file="{f}" onclick="return playFile(this.dataset.file)"'.format(f=quote(f.name))
+			html += 'href="{f}" data-file="{f}" onclick="return playFile(this.dataset.file)"'.format(f=quote(f.name))
 		else:
 			html += 'href="{}"'.format(quote(f.name))
 		html += ">{}</a></li>\n".format(escape(f.name))
-	html += "</ul>\n</div>\n</body>\n</html>\n"
+	html += "</ul>\n</body>\n</html>\n"
 	return html
 
 if __name__ == "__main__":
