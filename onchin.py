@@ -130,19 +130,23 @@ def gendir(path):
 	cover = ""
 	path = os.path.realpath(path)
 
-	for entry in sorted(os.listdir(path)):
-		files.append(Entry(entry))
-		i = len(files) - 1
-		l = entry.lower()
+	for filename in sorted(os.listdir(path)):
+		entry = Entry(filename)
+		l = filename.lower()
 
-		if os.path.isdir(entry):
+		if os.path.isdir(filename):
 			continue
 
 		if l.endswith(playable_exts):
-			files[i].playable = True
+			entry.playable = True
+			playable.append(entry)
+		else:
+			regular.append(entry)
 
 		if l in covers:
-			cover = entry
+			cover = filename
+
+	files += playable + regular
 
 	html = "<!doctype html>\n"
 	html += "<html>\n<head>\n"
