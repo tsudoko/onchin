@@ -50,7 +50,7 @@ img#cover {
 	max-width: 500px;
 }
 
-a[data-file] {
+a[data-playable] {
 	font-size: 14px;
 	line-height: 20px;
 	color: #cbcbcb;
@@ -71,12 +71,15 @@ function playFile(path) {
 }
 
 function main() {
-	const files = Array.map(document.querySelectorAll("#files a[data-file]"), (a) => a.dataset.file);
+	const fileNodes = document.querySelectorAll("#files a[data-playable]");
+	const files = Array.map(fileNodes, (a) => a.href);
 	const playNext = %s;
+
+	fileNodes.forEach((a) => a.onclick = () => playFile(a.href));
 
 	if(playNext)
 		player.addEventListener("ended", () => {
-			let i = files.indexOf(basename(player.src));
+			let i = files.indexOf(player.src);
 			if(i + 1 < files.length)
 				playFile(files[i+1]);
 		});
@@ -131,11 +134,9 @@ def gendir(path):
 	html += "	</div>\n"
 	html += '	<ul id="files">\n'
 	for f in files:
-		html += "	<li><a "
+		html += '	<li><a href="{}"'.format(quote(f.name))
 		if f.playable:
-			html += 'href="{f}" data-file="{f}" onclick="return playFile(this.dataset.file)"'.format(f=quote(f.name))
-		else:
-			html += 'href="{}"'.format(quote(f.name))
+			html += " data-playable"
 		html += ">{}</a></li>\n".format(escape(f.name))
 	html += "</ul>\n</body>\n</html>\n"
 	return html
