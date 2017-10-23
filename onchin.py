@@ -55,6 +55,23 @@ a[data-playable] {
 	line-height: 20px;
 	color: #cbcbcb;
 }
+
+ul {
+	padding-left: 2em;
+}
+
+ul li {
+	list-style-type: none;
+}
+
+ul li:before {
+	content: "> ";
+}
+
+ul li[data-np]:before {
+	content: "> ";
+	color: #454545;
+}
 """
 
 js = """
@@ -63,7 +80,16 @@ function basename(path) {
 	return elems[elems.length - 1];
 }
 
-function playFile(path) {
+function play(a) {
+	const path = a.href;
+	const prev = document.querySelector(`#files a[href="${basename(player.src)}"]`);
+	console.log(`#files a[href="${basename(player.src)}"]`);
+	console.log(prev);
+
+	if(prev)
+		prev.parentNode.removeAttribute("data-np");
+
+	a.parentNode.dataset.np = true;
 	np.innerText = basename(decodeURIComponent(path));
 	player.src = path;
 	player.play();
@@ -75,13 +101,13 @@ function main() {
 	const files = Array.map(fileNodes, (a) => a.href);
 	const playNext = %s;
 
-	fileNodes.forEach((a) => a.onclick = () => playFile(a.href));
+	fileNodes.forEach((a) => a.onclick = () => play(a));
 
 	if(playNext)
 		player.addEventListener("ended", () => {
 			let i = files.indexOf(player.src);
 			if(i + 1 < files.length)
-				playFile(files[i+1]);
+				play(fileNodes[i+1]);
 		});
 }
 """ % ("true" if play_next else "false")
