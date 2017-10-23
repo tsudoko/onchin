@@ -70,7 +70,11 @@ ul li:before {
 
 ul li[data-np]:before {
 	content: "> ";
-	color: #454545;
+	color: #777;
+}
+h3 {
+	font-size: 18px;
+	color: #dddddd;
 }
 """
 
@@ -163,6 +167,7 @@ def gendir(path):
 	html += '		<div id="np"></div>\n'
 	html += "	</div>\n"
 	html += '	<ul id="files">\n'
+	html += '	<h3>{}</h3>\n'.format(escape(basename(path)))
 	for f in files:
 		html += '	<li><a href="{}"'.format(quote(f.name))
 		if f.playable:
